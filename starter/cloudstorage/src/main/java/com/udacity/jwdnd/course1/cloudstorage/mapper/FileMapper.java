@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface FileMapper {
     @Select("SELECT * FROM FILES WHERE filename = #{filename}")
-    File getFile(String filename);
+    File getFile(Integer userid, String filename);
 
     @Select("SELECT * FROM FILES WHERE id = #{fileid}")
     File getFile(Integer fileid);
