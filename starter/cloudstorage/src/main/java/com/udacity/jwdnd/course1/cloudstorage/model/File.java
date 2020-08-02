@@ -5,17 +5,17 @@ import java.sql.Blob;
 public class File {
     private Integer fileId;
     private String filename;
-    private String contentType;
+    private String contenttype;
     private String fileSize;
     private Integer userid;
-    private Blob fileData;
+    private Blob filedata;
 
-    public File(String filename, String contentType, String fileSize, Integer userid, Blob fileData) {
+    public File(String filename, String contenttype, String fileSize, Integer userid, Blob filedata) {
         this.filename = filename;
-        this.contentType = contentType;
+        this.contenttype = contenttype;
         this.fileSize = fileSize;
         this.userid = userid;
-        this.fileData = fileData;
+        this.filedata = filedata;
     }
 
     public Integer getFileId() {
@@ -30,12 +30,12 @@ public class File {
         this.filename = filename;
     }
 
-    public String getContentType() {
-        return contentType;
+    public String getContenttype() {
+        return contenttype;
     }
 
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
+    public void setContenttype(String contenttype) {
+        this.contenttype = contenttype;
     }
 
     public String getFileSize() {
@@ -54,11 +54,11 @@ public class File {
         this.userid = userid;
     }
 
-    public Blob getFileData() {
-        return fileData;
+    public Blob getFiledata() {
+        return filedata;
     }
 
-    public void setFileData(Blob fileData) {
-        this.fileData = fileData;
+    public void setFiledata(Blob fileData) {
+        this.filedata = fileData;
     }
 }
