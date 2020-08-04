@@ -10,7 +10,8 @@ public class File {
     private Integer userid;
     private Blob filedata;
 
-    public File(String filename, String contenttype, String fileSize, Integer userid, Blob filedata) {
+    public File(Integer fileid, String filename, String contenttype, String fileSize, Integer userid, Blob filedata) {
+        this.fileId = fileid;
         this.filename = filename;
         this.contenttype = contenttype;
         this.fileSize = fileSize;
