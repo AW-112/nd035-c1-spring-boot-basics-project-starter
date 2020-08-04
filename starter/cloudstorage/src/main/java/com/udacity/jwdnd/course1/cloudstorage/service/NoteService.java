@@ -2,8 +2,9 @@ package com.udacity.jwdnd.course1.cloudstorage.service;
 
 import com.udacity.jwdnd.course1.cloudstorage.mapper.NoteMapper;
 import com.udacity.jwdnd.course1.cloudstorage.model.Note;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class NoteService {
@@ -15,13 +16,17 @@ public class NoteService {
         this.userService = userService;
     }
 
-    public boolean addNote(Note note) {
-        note.setUserid(this.userService.getCurrentUser().getUserid());
-        return (noteMapper.insertNote(note) > 0);
+    public boolean addNote(String username, Note note) {
+        note.setUserid(this.userService.getUser(username).getUserid());
+        return noteMapper.insertNote(note) > 0;
+    }
+
+    public List<Note> getNotes(String username) {
+        return noteMapper.getNotes(this.userService.getUser(username).getUserid());
     }
 
     public boolean updateNote(Note note) {
-        return (noteMapper.updateNote(note) > 0);
+        return noteMapper.updateNote(note) > 0;
     }
 
     public void deleteNote(Integer noteid) {
