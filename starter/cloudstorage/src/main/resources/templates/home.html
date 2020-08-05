@@ -192,6 +192,19 @@
 
         <!--For opening the note modal-->
         <script type="text/javascript">
+            async function fetchDecodedPassword(credentialId) {
+                let port = location.port;
+                let response = await fetch(`http://localhost:${port}/credentials/decode-password?credentialId=${credentialId}`)
+
+                if (response.ok) {
+                    let data = await response.json();
+                    let result = JSON.parse(JSON.stringify(data));
+                    return result.decryptedPassword;
+                } else {
+                    alert("Can not fetch decode password. Error code "+response.status);
+                }
+            }
+
             // For opening the note modal
             function showNoteModal(noteId, noteTitle, noteDescription) {
                 $('#note-id').val(noteId ? noteId : '');
@@ -201,7 +214,13 @@
             }
 
             // For opening the credentials modal
-            function showCredentialModal(credentialId, url, username, password) {
+            async function showCredentialModal(credentialId, url, username, password) {
+                if (password!='') {
+                    if (credentialId) {
+                        password = await fetchDecodedPassword(credentialId);
+                    }
+                }
+
                 $('#credential-id').val(credentialId ? credentialId : '');
                 $('#credential-url').val(url ? url : '');
                 $('#credential-username').val(username ? username : '');

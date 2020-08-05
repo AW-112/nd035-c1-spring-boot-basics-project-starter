@@ -56,8 +56,9 @@ public class CredentialService {
         return credential;
     }
 
-    private Credential decryptPassword(Credential credential) {
+    public String decryptPassword(Integer credentialId) {
+        Credential credential = this.credentialMapper.getCredential(credentialId);
         credential.setPassword(this.encryptionService.decryptValue(credential.getPassword(), credential.getKey()));
-        return credential;
+        return credential.getPassword();
     }
 }
