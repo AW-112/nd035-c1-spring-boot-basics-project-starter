@@ -20,26 +20,26 @@ public class HomeCredential {
     @FindBy(id = "credential-password")
     private WebElement credentialPassword;
 
-    @FindBy(className = "all-credential-url")
+    @FindBy(className = "list-credential-url")
     private List<WebElement> credentialURLClass;
 
-    @FindBy(className = "all-credential-username")
+    @FindBy(className = "list-credential-username")
     private List<WebElement> credentialUsernameClass;
 
-    @FindBy(className = "all-credential-password")
-    private  List<WebElement> credentialPasswordClass;
+    @FindBy(className = "list-credential-password")
+    private List<WebElement> credentialPasswordClass;
 
-    @FindBy(className = "all-credential-edit")
+    @FindBy(className = "list-credential-edit")
     private List<WebElement> credentialEditClass;
 
-    @FindBy(className = "all-credential-delete")
+    @FindBy(className = "list-credential-delete")
     private List<WebElement> credentialDeleteClass;
 
-    public HomeCredential(WebDriver driver){
+    public HomeCredential(WebDriver driver) {
         PageFactory.initElements(driver, this);
     }
 
-    public void assignCredentialData(String url, String username, String password){
+    public void assignCredentialData(String url, String username, String password) {
         this.credentialURL.clear();
         this.credentialUsername.clear();
         this.credentialPassword.clear();
@@ -48,32 +48,39 @@ public class HomeCredential {
         this.credentialPassword.sendKeys(password);
     }
 
-    public void submitCredential(){
+    public void submitCredential() {
         this.credentialUsername.submit();
     }
 
-    public String getModalURL(){
+    public String getModalURL() {
         return this.credentialURL.getAttribute("value");
     }
-    public String getModalUsername(){
+
+    public String getModalUsername() {
         return this.credentialUsername.getAttribute("value");
     }
-    public String getModalPassword(){
+
+    public String getModalPassword() {
         return this.credentialPassword.getAttribute("value");
     }
-    public String getRecentCredentialURL(){
-        return this.credentialURLClass.get(this.credentialURLClass.size()-1).getText();
+
+    public String getRecentCredentialURL() {
+        return this.credentialURLClass.get(this.credentialURLClass.size() - 1).getText();
     }
 
-    public String getRecentCredentialUsername(){
-        return this.credentialUsernameClass.get(this.credentialUsernameClass.size()-1).getText();
+    public String getRecentCredentialUsername() {
+        return this.credentialUsernameClass.get(this.credentialUsernameClass.size() - 1).getText();
     }
 
-    public String getRecentCredentialPassword(){
-        return this.credentialPasswordClass.get(this.credentialPasswordClass.size()-1).getText();
+    public String getRecentCredentialPassword() {
+        return this.credentialPasswordClass.get(this.credentialPasswordClass.size() - 1).getText();
     }
 
-    public void credentialEditClick(){
+    public void credentialEditClick() {
         credentialEditClass.get(0).click();
+    }
+
+    public void credentialAddClick() {
+        credentialAdd.click();
     }
 }

@@ -23,7 +23,7 @@ public class CredentialController {
     @PostMapping(value = "/credentials")
     public String addCrendential(Authentication auth, Credential credential, Model model) {
         if (credential.getCredentialid() != null) {
-            if (this.credentialService.updateCredential(credential)) {
+            if (!this.credentialService.updateCredential(credential)) {
                 model.addAttribute("errorMessage", "There was an error updating the credential. Please try again!");
             }
         }

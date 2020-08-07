@@ -20,6 +20,14 @@ class CloudStorageApplicationTests {
 
 	private WebDriver driver;
 
+	private final String username1          = "timmi";
+	private final String url1               = "www.gmail.com";
+	private final String password1          = "123";
+
+	private final String username2          = "anton";
+	private final String url2               = "www.xmail.com";
+	private final String password2          = "321";
+
 	@BeforeAll
 	static void beforeAll() {
 		WebDriverManager.firefoxdriver().setup();
@@ -109,19 +117,88 @@ class CloudStorageApplicationTests {
 
 	@Test
 	@Order(50)
-	public void testHomeCredentialAdd() {
+	public void testHomeCredentialAdd() throws InterruptedException {
 		testLoginValid();
 
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+
 		HomeCredential homeCredential = new HomeCredential(driver);
-		homeCredential.assignCredentialData("www.gmail.com", "timmi", "321");
+		homeCredential.credentialAddClick();
+		homeCredential.assignCredentialData(url1, username1, password1);
 		homeCredential.submitCredential();
 
+		Thread.sleep(1000);
 		Assertions.assertEquals("Result", driver.getTitle());
 
 		ResultPage resultPage = new ResultPage(driver);
-		Assertions.assertEquals("Your changes were successfully saved. Click here to continue.", resultPage.getSuccessMessage());
+		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
 		resultPage.linkHomeClick();
 
+		Thread.sleep(1000);
 		Assertions.assertEquals("Home", driver.getTitle());
+	}
+
+	public void testHomeCredentialFromList(String url, String username, String password) {
+		testLoginValid();
+
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+
+		HomeCredential homeCredential = new HomeCredential(driver);
+		Assertions.assertEquals(url, homeCredential.getRecentCredentialURL());
+		Assertions.assertEquals(username, homeCredential.getRecentCredentialUsername());
+		Assertions.assertNotEquals(password, homeCredential.getRecentCredentialPassword());
+	}
+
+	@Test
+	@Order(51)
+	public void testHomeCredentialFromListAfterAdd() {
+		testHomeCredentialFromList(url1,username1,password1);
+	}
+
+	@Test
+	@Order(52)
+	public void testHomeCredentialCheckEditFieldsInModalDialog() {
+		testLoginValid();
+
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+
+		HomeCredential homeCredential = new HomeCredential(driver);
+		homeCredential.credentialEditClick();
+		Assertions.assertEquals(url1, homeCredential.getModalURL());
+		Assertions.assertEquals(username1, homeCredential.getModalUsername());
+		Assertions.assertEquals(password1, homeCredential.getModalPassword());
+	}
+
+	@Test
+	@Order(53)
+	public void testHomeCredentialEditUpdateCredential() throws InterruptedException {
+		testLoginValid();
+
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+
+		HomeCredential homeCredential = new HomeCredential(driver);
+		homeCredential.credentialEditClick();
+		homeCredential.assignCredentialData(url2, username2, password2);
+		homeCredential.submitCredential();
+
+		Thread.sleep(1000);
+		Assertions.assertEquals("Result", driver.getTitle());
+
+		ResultPage resultPage = new ResultPage(driver);
+		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
+		resultPage.linkHomeClick();
+
+		Thread.sleep(1000);
+		Assertions.assertEquals("Home", driver.getTitle());
+	}
+
+	@Test
+	@Order(54)
+	public void testHomeCredentialFromListAfterUpdate() {
+		testHomeCredentialFromList(url2,username2,password2);
 	}
 }

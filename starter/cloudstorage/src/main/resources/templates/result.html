@@ -10,8 +10,8 @@
     </head>
     <body class="p-3 mb-2 bg-light text-black">
         <div class="container justify-content-center w-50 p-3" style="margin-top: 5em;">
-            <div th:unless="${errorMessage}" id="result-Success" class="alert alert-success fill-parent">
-                <h1 class="display-5">Success</h1>
+            <div th:unless="${errorMessage}" class="alert alert-success fill-parent">
+                <h1 id="result-Success" class="display-5">Success</h1>
                 <span>Your changes were successfully saved. Click <a id="link-home" href="/home">here</a> to continue.</span>
             </div>
             <div th:if="${errorMessage}" id="result-ChangesNotSaved" class="alert alert-danger fill-parent">
