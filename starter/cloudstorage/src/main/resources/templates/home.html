@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="nav-notes" role="tabpanel" aria-labelledby="nav-notes-tab">
-                        <button style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()">
+                        <button id="btn-note-add" style="margin: 0.25em;" type="button" class="btn btn-info float-right" onclick="showNoteModal()">
                             + Add a New Note
                         </button>
 
@@ -77,11 +77,11 @@
                                 <tbody>
                                     <tr th:each="note : ${notes}">
                                         <td>
-                                            <button type="button" class="btn btn-success" th:onclick="javascript:showNoteModal([[${note.noteid}]],[[${note.notetitle}]],[[${note.notedescription}]])">Edit</button>
-                                            <a class="btn btn-danger" th:href="@{/notes/delete/} + ${note.noteid}">Delete</a>
+                                            <button type="button" class="btn btn-success list-notes-edit" th:onclick="javascript:showNoteModal([[${note.noteid}]],[[${note.notetitle}]],[[${note.notedescription}]])">Edit</button>
+                                            <a class="btn btn-danger list-notes-delete" th:href="@{/notes/delete/} + ${note.noteid}">Delete</a>
                                         </td>
-                                        <th scope="row" th:text="${note.notetitle}">Example Note Title</th>
-                                        <td th:text="${note.notedescription}">Example Note Description </td>
+                                        <th class="list-notes-title" scope="row" th:text="${note.notetitle}">Example Note Title</th>
+                                        <td class="list-notes-description" th:text="${note.notedescription}">Example Note Description </td>
                                     </tr>
                                 </tbody>
                             </table>
