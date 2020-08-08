@@ -83,4 +83,8 @@ public class HomeCredential {
     public void credentialAddClick() {
         credentialAdd.click();
     }
+
+    public void credentialDeleteClick() {
+        credentialDeleteClass.get(0).click();
+    }
 }

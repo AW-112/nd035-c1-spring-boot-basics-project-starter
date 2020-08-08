@@ -133,7 +133,7 @@ class CloudStorageApplicationTests {
 	}
 
 	// Note
-	public void testHomeNoteAdd() {
+	/*public void testHomeNoteAdd() {
 		HomePage homePage = new HomePage(driver);
 		homePage.navNoteSectionClick();
 
@@ -221,6 +221,101 @@ class CloudStorageApplicationTests {
 		driver.get("http://localhost:" + this.port + "/home");
 		testHomeNoteDeleteNote();
 		testHomeNoteIsNoteDeleted();
+	}*/
+
+	// Credential
+	public void testHomeCredentialAdd() {
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+
+		this.wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab")));
+		HomeCredential homeCredential = new HomeCredential(driver);
+		homeCredential.credentialAddClick();
+		this.wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url")));
+		homeCredential.assignCredentialData(url1, username1, password1);
+		Assertions.assertEquals(url1, homeCredential.getModalURL());
+		Assertions.assertEquals(username1, homeCredential.getModalUsername());
+		Assertions.assertEquals(password1, homeCredential.getModalPassword());
+		homeCredential.submitCredential();
+
+		testResultPage();
+	}
+
+	public void testHomeCredentialFromList(String url, String username, String password) {
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab")));
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credentialTable")));
+		HomeCredential homeCredential = new HomeCredential(driver);
+		Assertions.assertEquals(url, homeCredential.getRecentCredentialURL());
+		Assertions.assertEquals(username, homeCredential.getRecentCredentialUsername());
+		Assertions.assertNotEquals(password, homeCredential.getRecentCredentialPassword());
+		Assertions.assertNotEquals("", homeCredential.getRecentCredentialPassword());
+	}
+
+	@Test
+	@Order(40)
+	public void testHomeNoteAddAndCheck() throws InterruptedException {
+		testLoginValid();
+		driver.get("http://localhost:" + this.port + "/home");
+		testHomeCredentialAdd();
+		testHomeCredentialFromList(url1,username1,password1);
+	}
+
+	public void testHomeCredentialEditUpdateCredential() {
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("list-credential-edit")));
+		HomeCredential homeCredential = new HomeCredential(driver);
+		homeCredential.credentialEditClick();
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credential-url")));
+		homeCredential.assignCredentialData(url2,username2,password2);
+		Assertions.assertEquals(url2, homeCredential.getModalURL());
+		Assertions.assertEquals(username2, homeCredential.getModalUsername());
+		Assertions.assertEquals(password2, homeCredential.getModalPassword());
+		homeCredential.submitCredential();
+
+		testResultPage();
+	}
+
+	@Test
+	@Order(41)
+	public void testHomeCredentialEditAndCheck() throws InterruptedException {
+		testLoginValid();
+		driver.get("http://localhost:" + this.port + "/home");
+		testHomeCredentialEditUpdateCredential();
+		testHomeCredentialFromList(url2,username2,password2);
+	}
+
+	public void testHomeCredentialDeleteCredential() {
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab")));
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("list-credential-delete")));
+		HomeCredential homeCredential = new HomeCredential(driver);
+		homeCredential.credentialDeleteClick();
+
+		testResultPage();
+	}
+
+	public void testHomeCredentialIsCredentialDeleted() {
+		this.wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-credentials-tab")));
+		HomePage homePage = new HomePage(driver);
+		homePage.navCredentialSectionClick();
+		this.wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("credentialTable")));
+		Assertions.assertFalse(driver.getPageSource().contains("list-credential-delete"));
+	}
+
+	@Test
+	@Order(42)
+	public void testHomeCredentialDeleteAndCheck() throws InterruptedException {
+		testLoginValid();
+		driver.get("http://localhost:" + this.port + "/home");
+		testHomeCredentialDeleteCredential();
+		testHomeCredentialIsCredentialDeleted();
 	}
 
 	/*@Test
