@@ -57,7 +57,18 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	@Order(10)
+	@Order(20)
+	public void testUserAccess() {
+		driver.get("http://localhost:" + this.port + "/signup");
+		Assertions.assertEquals("Sign Up", driver.getTitle());
+
+		driver.get("http://localhost:" + this.port + "/login");
+		Assertions.assertEquals("Login", driver.getTitle());
+
+		driver.get("http://localhost:" + this.port + "/home");
+		Assertions.assertEquals("Login", driver.getTitle());
+	}
+
 	public void testSignupPage() {
 		driver.get("http://localhost:" + this.port + "/signup");
 		Assertions.assertEquals("Sign Up", driver.getTitle());
@@ -68,8 +79,6 @@ class CloudStorageApplicationTests {
 		Assertions.assertEquals("You successfully signed up! Please continue to the login page.", signupPage.getSuccessMessage());
 	}
 
-/*	@Test
-	@Order(11)
 	public void testSignupPageUsernameExist() {
 		driver.get("http://localhost:" + this.port + "/signup");
 		Assertions.assertEquals("Sign Up", driver.getTitle());
@@ -80,8 +89,6 @@ class CloudStorageApplicationTests {
 		Assertions.assertEquals("The username already exists.", signupPage.getErrorMessage());
 	}
 
-	@Test
-	@Order(20)
 	public void testLoginUsernameNotExist() {
 		driver.get("http://localhost:" + this.port + "/login");
 		Assertions.assertEquals("Login", driver.getTitle());
@@ -90,10 +97,8 @@ class CloudStorageApplicationTests {
 		loginPage.assignLoginFields("tommi", "123");
 		loginPage.submitForm();
 		Assertions.assertEquals("Invalid username or password",loginPage.getErrorMessage());
-	}*/
+	}
 
-	@Test
-	@Order(21)
 	public void testLoginValid() {
 		driver.get("http://localhost:" + this.port + "/login");
 		Assertions.assertEquals("Login", driver.getTitle());
@@ -106,23 +111,21 @@ class CloudStorageApplicationTests {
 		Assertions.assertEquals("Home", driver.getTitle());
 	}
 
-/*	@Test
-	@Order(30)
-	public void testHomeLogout() {
-		driver.get("http://localhost:" + this.port + "/home");
-		Assertions.assertEquals("Home", driver.getTitle());
-
+	public void testLogout() {
 		HomePage homePage = new HomePage(driver);
 		homePage.logoutClick();
 		Assertions.assertEquals("Login", driver.getTitle());
 	}
 
 	@Test
-	@Order(31)
-	public void testHomeAccess() {
-		driver.get("http://localhost:" + this.port + "/home");
-		Assertions.assertEquals("Login", driver.getTitle());
-	}*/
+	@Order(21)
+	public void testSignUpAndLoginAndLogout() {
+		testSignupPage();
+		testSignupPageUsernameExist();
+		testLoginUsernameNotExist();
+		testLoginValid();
+		testLogout();
+	}
 
 	public void testResultPage() {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("alert")));
@@ -133,7 +136,7 @@ class CloudStorageApplicationTests {
 	}
 
 	// Note
-	/*public void testHomeNoteAdd() {
+	public void testHomeNoteAdd() {
 		HomePage homePage = new HomePage(driver);
 		homePage.navNoteSectionClick();
 
@@ -161,7 +164,7 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	@Order(40)
+	@Order(30)
 	public void testHomeNoteAddAndCheck() throws InterruptedException {
 		testLoginValid();
 		driver.get("http://localhost:" + this.port + "/home");
@@ -186,7 +189,7 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	@Order(41)
+	@Order(31)
 	public void testHomeNoteEditAndCheck() throws InterruptedException {
 		testLoginValid();
 		driver.get("http://localhost:" + this.port + "/home");
@@ -215,13 +218,13 @@ class CloudStorageApplicationTests {
 	}
 
 	@Test
-	@Order(42)
+	@Order(32)
 	public void testHomeNoteDeleteAndCheck() throws InterruptedException {
 		testLoginValid();
 		driver.get("http://localhost:" + this.port + "/home");
 		testHomeNoteDeleteNote();
 		testHomeNoteIsNoteDeleted();
-	}*/
+	}
 
 	// Credential
 	public void testHomeCredentialAdd() {
@@ -256,7 +259,7 @@ class CloudStorageApplicationTests {
 
 	@Test
 	@Order(40)
-	public void testHomeNoteAddAndCheck() throws InterruptedException {
+	public void testHomeCredentialAddAndCheck() throws InterruptedException {
 		testLoginValid();
 		driver.get("http://localhost:" + this.port + "/home");
 		testHomeCredentialAdd();
@@ -317,87 +320,4 @@ class CloudStorageApplicationTests {
 		testHomeCredentialDeleteCredential();
 		testHomeCredentialIsCredentialDeleted();
 	}
-
-	/*@Test
-	@Order(50)
-	public void testHomeCredentialAdd() throws InterruptedException {
-		HomePage homePage = new HomePage(driver);
-		homePage.navCredentialSectionClick();
-
-		HomeCredential homeCredential = new HomeCredential(driver);
-		homeCredential.credentialAddClick();
-		homeCredential.assignCredentialData(url1, username1, password1);
-		homeCredential.submitCredential();
-
-		Thread.sleep(1000);
-		Assertions.assertEquals("Result", driver.getTitle());
-
-		ResultPage resultPage = new ResultPage(driver);
-		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
-		resultPage.linkHomeClick();
-
-		Thread.sleep(1000);
-		Assertions.assertEquals("Home", driver.getTitle());
-	}
-
-	public void testHomeCredentialFromList(String url, String username, String password) {
-		HomePage homePage = new HomePage(driver);
-		homePage.navCredentialSectionClick();
-
-		HomeCredential homeCredential = new HomeCredential(driver);
-		Assertions.assertEquals(url, homeCredential.getRecentCredentialURL());
-		Assertions.assertEquals(username, homeCredential.getRecentCredentialUsername());
-		Assertions.assertNotEquals(password, homeCredential.getRecentCredentialPassword());
-	}
-
-	@Test
-	@Order(51)
-	public void testHomeCredentialFromListAfterAdd() {
-		testHomeCredentialFromList(url1,username1,password1);
-	}
-
-	@Test
-	@Order(52)
-	public void testHomeCredentialCheckEditFieldsInModalDialog() {
-		testLoginValid();
-
-		HomePage homePage = new HomePage(driver);
-		homePage.navCredentialSectionClick();
-
-		HomeCredential homeCredential = new HomeCredential(driver);
-		homeCredential.credentialEditClick();
-		Assertions.assertEquals(url1, homeCredential.getModalURL());
-		Assertions.assertEquals(username1, homeCredential.getModalUsername());
-		Assertions.assertEquals(password1, homeCredential.getModalPassword());
-	}
-
-	@Test
-	@Order(53)
-	public void testHomeCredentialEditUpdateCredential() throws InterruptedException {
-		testLoginValid();
-
-		HomePage homePage = new HomePage(driver);
-		homePage.navCredentialSectionClick();
-
-		HomeCredential homeCredential = new HomeCredential(driver);
-		homeCredential.credentialEditClick();
-		homeCredential.assignCredentialData(url2, username2, password2);
-		homeCredential.submitCredential();
-
-		Thread.sleep(1000);
-		Assertions.assertEquals("Result", driver.getTitle());
-
-		ResultPage resultPage = new ResultPage(driver);
-		Assertions.assertEquals("Success", resultPage.getSuccessMessage());
-		resultPage.linkHomeClick();
-
-		Thread.sleep(1000);
-		Assertions.assertEquals("Home", driver.getTitle());
-	}
-
-	@Test
-	@Order(54)
-	public void testHomeCredentialFromListAfterUpdate() {
-		testHomeCredentialFromList(url2,username2,password2);
-	}*/
 }
